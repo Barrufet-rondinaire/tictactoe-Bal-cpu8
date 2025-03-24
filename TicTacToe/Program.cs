@@ -18,7 +18,7 @@ namespace TicTacToeME
 
             using HttpClient client = new() { BaseAddress = uri };
 
-            // Obtener la llista de jugadors
+            // Obtenir la llista de jugadors
             var jugadors = await client.GetFromJsonAsync<List<string>>("jugadors");
             
             Console.WriteLine("\nJugadors disponibles:");
