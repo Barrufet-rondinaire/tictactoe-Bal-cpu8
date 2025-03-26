@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TicTacToeME
@@ -12,19 +13,26 @@ namespace TicTacToeME
         {
             var url = "http://localhost:8080/";
             Uri uri = new(url);
-
-            Console.WriteLine(uri.Host);
-            Console.WriteLine(uri.Port);
-
+            
             using HttpClient client = new() { BaseAddress = uri };
 
             // Obtenir la llista de jugadors
-            var jugadors = await client.GetFromJsonAsync<List<string>>("jugadors");
-            
+            var text = await client.GetStringAsync("jugadors");
+
             Console.WriteLine("\nJugadors disponibles:");
-            foreach (var jugador in jugadors)
+
+           //Trobar noms i paisos
+            var regex = new Regex(@"participant ([\p{L}']+) .*? representa a? ([\p{L}\-]+)", RegexOptions.IgnoreCase);
+            var matches = regex.Matches(text);
+            
+            foreach (Match match in matches)
             {
-                Console.WriteLine("- " + jugador);
+                if (match.Groups.Count == 3)
+                {
+                    string jugador = match.Groups[1].Value;
+                    string pais = match.Groups[2].Value;
+                    Console.WriteLine($"- {jugador} ({pais})");
+                }
             }
         }
     }
