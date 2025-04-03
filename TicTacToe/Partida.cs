@@ -2,8 +2,8 @@ namespace TicTacToeME;
 
 public class Partida
 {
-    public int numero { get; set; }
-    public string jugador1 { get; set; }
-    public string jugador2 { get; set; }
-    public string[] tauler { get; set; }
+    public int Numero { get; set; }
+    public string[] Tauler { get; set; }
+    public string Jugador1 { get; set; }
+    public string Jugador2 { get; set; }
 }

@@ -1,43 +1,30 @@
 namespace TicTacToeME;
-public class GuanyadorTorneig
+class GuanyadorTorneig
 {
-    private Dictionary<string, Jugador> jugadors;
-
-    public GuanyadorTorneig()
-    {
-        jugadors = new Dictionary<string, Jugador>();
-    }
+    private readonly Dictionary<string, Jugador> _jugadors = new();
 
     public void AfegirJugador(Jugador jugador)
     {
-        if (!jugadors.ContainsKey(jugador.Nom))
+        if (!_jugadors.ContainsKey(jugador.Nom))
         {
-            jugadors.Add(jugador.Nom, jugador);
+            _jugadors[jugador.Nom] = jugador;
         }
     }
 
-    public void AfegirVictòria(string nomJugador)
+    public void AfegirVictoria(string nomJugador)
     {
-        if (jugadors.ContainsKey(nomJugador))
+        if (_jugadors.TryGetValue(nomJugador, out var jugador))
         {
-            jugadors[nomJugador].AfegirVictòria();
+            jugador.AfegirVictoria();
+        }
+        else
+        {
+            Console.WriteLine($"Error: el jugador {nomJugador} no està registrat.");
         }
     }
 
-    public string DeterminarGuanyador()
+    public List<Jugador> ObtenirResultats()
     {
-        Jugador guanyador = null;
-        int maxVictories = 0;
-
-        foreach (var jugador in jugadors.Values)
-        {
-            if (jugador.Victories > maxVictories)
-            {
-                guanyador = jugador;
-                maxVictories = jugador.Victories;
-            }
-        }
-
-        return guanyador?.Nom;
+        return new List<Jugador>(_jugadors.Values);
     }
 }
